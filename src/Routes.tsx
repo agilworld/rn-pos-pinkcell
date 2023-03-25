@@ -15,7 +15,64 @@ import Help from "./Screens/Common/_Help"
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
+const MainStack = createNativeStackNavigator()
+const AuthStack = createNativeStackNavigator()
 
+function MainAppStack(props:any) : JSX.Element {
+    return (<MainStack.Navigator  initialRouteName="Home" screenOptions={{
+        headerStyle:{
+           backgroundColor:"white"
+        },
+        contentStyle:{
+            backgroundColor:"#ffe4e1",
+            padding:20
+        },
+        headerShadowVisible:true,
+    }}>
+        <MainStack.Screen
+            name={'Dashboard'}
+            component={Home}
+            navigationKey="home"
+            options={{ statusBarColor:"white", headerBackVisible:false }}
+        />
+        <MainStack.Screen
+            name={'Settings'}
+            component={Settings}
+            options={{ statusBarColor:"white"}}
+        />
+        <MainStack.Screen
+            name={'Notification'}
+            component={Notification}
+            options={{ statusBarColor:"white"}}
+        />
+    </MainStack.Navigator>)
+}
+
+function AuthAppStack(props:any) : JSX.Element {
+    return (<AuthStack.Navigator screenOptions={{
+        headerStyle:{
+           backgroundColor:"#fefefe"
+        },
+        contentStyle:{
+            borderTopColor:"#ddd",
+            borderTopWidth:1,
+            backgroundColor:"white",
+            padding:30
+        },
+        headerShadowVisible:true,
+    }}>
+        <AuthStack.Screen
+            name={'Splash'}
+            component={Splash}
+            options={{ headerShown:false, contentStyle:{ padding:0 }, statusBarColor:"white"}}
+        />
+        <AuthStack.Screen
+            name={'Login'}
+            component={Login}
+            options={{  headerShown:false, statusBarColor:"white"}}
+        />
+    </AuthStack.Navigator>)
+}
 export default function StackNavigator(props:any): JSX.Element {
 
     const stackRef = useRef(null);
@@ -25,37 +82,12 @@ export default function StackNavigator(props:any): JSX.Element {
     }, []);
 
     return <NavigationContainer ref={stackRef}>
-        <Stack.Navigator initialRouteName="Splash">
-            {props.isLoggedIn ? (<Stack.Group>
-                <Stack.Screen
-                    name={'Home'}
-                    component={Home}
-                    navigationKey="home"
-                    options={{ statusBarColor:"white"}}
-                />
-                <Stack.Screen
-                    name={'Settings'}
-                    component={Settings}
-                    options={{ statusBarColor:"white"}}
-                />
-                <Stack.Screen
-                    name={'Notification'}
-                    component={Notification}
-                    options={{ statusBarColor:"white"}}
-                />
-            </Stack.Group>) : (<Stack.Group>
-                <Stack.Screen
-                    name={'Login'}
-                    component={Login}
-                    options={{ statusBarColor:"white"}}
-                />
-                <Stack.Screen
-                    name={'Splash'}
-                    component={Splash}
-                    options={{ headerShown:false, statusBarColor:"white"}}
-                />
-            </Stack.Group>)}
-
+        <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="Splash">
+           <Stack.Group>
+                <Stack.Screen key="auth" name={'Auth'} component={AuthAppStack} />
+                <Stack.Screen key="main" name={'Main'} component={MainAppStack} />
+            </Stack.Group>
+           
             <Stack.Group>
                 <Stack.Screen
                     name={'Help'}

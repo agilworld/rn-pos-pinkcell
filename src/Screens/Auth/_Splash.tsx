@@ -11,7 +11,8 @@ import Navigator from "../../Libs/Navigator"
 export default function Splash(props:any): JSX.Element {
     useEffect(() => {
       setTimeout(()=>{
-        Navigator.resetRoot("Login")
+        //Navigator.resetToAuth("Login")
+        props.navigation.navigate("Login")
       },5000)
     }, [])
     
